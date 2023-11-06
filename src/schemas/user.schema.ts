@@ -1,4 +1,4 @@
-import { object, string } from 'zod';
+import { object, string, TypeOf } from 'zod';
 
 export const createUserSchema = object({
   body: object({
@@ -31,3 +31,7 @@ export const loginUserSchema = object({
       .max(32, 'Password must be less than 32 characters'),
   }),
 });
+
+export type CreateUserInput = Omit<TypeOf<typeof createUserSchema>['body'], 'passwordConfirmation'>;
+
+export type LoginUserInput = TypeOf<typeof loginUserSchema>['body'];
