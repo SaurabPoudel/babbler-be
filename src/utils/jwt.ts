@@ -4,6 +4,7 @@ import { privateKey, publicKey } from '../config';
 
 export const signJwt = (payload: Object, options: SignOptions) => {
   const private_key = Buffer.from(privateKey, 'base64').toString('ascii');
+  console.log(private_key);
   return jwt.sign(payload, private_key, {
     ...(options && options),
     algorithm: 'RS256',

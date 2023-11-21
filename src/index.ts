@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import { AppDataSource } from './data-source';
+import * as cookieParser from 'cookie-parser';
 import * as morgan from 'morgan';
 import { port } from './config';
 import authRoutes from './routes/auth.routes';
@@ -12,6 +13,7 @@ AppDataSource.initialize()
     const app = express();
     app.use(morgan('tiny'));
     app.use(bodyParser.json());
+    app.use(cookieParser());
     // register express routes from defined application routes
 
     app.use('/api/auth', authRoutes);

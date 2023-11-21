@@ -6,9 +6,9 @@ export const dbUser = process.env.DB_USER || 'postgres';
 export const dbPassword = process.env.DB_PASSWORD || 'postgres';
 export const database = process.env.DB;
 
-export const privateKey = process.env.RSA_PRIVATE_KEY;
+export const privateKey = process.env.JWT_ACCESS_TOKEN_PRIVATE_KEY;
 
-export const publicKey = process.env.RSA_PUBLIC_KEY;
+export const publicKey = process.env.JWT_ACCESS_TOKEN_PUBLIC_KEY;
 
 export const accessTokenExpiresIn = parseInt(process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME) || 15;
 

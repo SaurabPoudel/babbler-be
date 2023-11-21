@@ -4,10 +4,10 @@ import { createUser, findUserByEmail, signTokens } from '../services/user.servic
 import { UserEntity } from '../entities/user.entity';
 import AppError from '../utils/appError';
 import redisClient from '../utils/connectRedis';
-
+import { accessTokenExpiresIn } from '../config';
 const cookiesOptions: CookieOptions = {
   httpOnly: true,
-  signed: true,
+  sameSite: 'lax',
 };
 
 if (process.env.NODE_ENV === 'production') {
@@ -16,10 +16,9 @@ if (process.env.NODE_ENV === 'production') {
 
 const accessTokenCookieOptions: CookieOptions = {
   ...cookiesOptions,
-  expires: new Date(Date.now() + parseInt(process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME) * 1000),
-  maxAge: parseInt(process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME) * 1000,
+  expires: new Date(Date.now() + accessTokenExpiresIn * 60 * 1000),
+  maxAge: accessTokenExpiresIn * 60 * 1000,
 };
-
 export const registerUserHandler = async (req: Request<{}, {}, CreateUserInput>, res: Response, next: NextFunction) => {
   try {
     const { name, password, email } = req.body;
