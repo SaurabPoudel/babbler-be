@@ -1,20 +1,20 @@
-import * as jwt from 'jsonwebtoken';
+import  jwt from 'jsonwebtoken';
 import { SignOptions } from 'jsonwebtoken';
-import { privateKey, publicKey } from '../config';
+import  config from 'config';
 
-export const signJwt = (payload: Object, options: SignOptions) => {
-  const private_key = Buffer.from(privateKey, 'base64').toString('ascii');
-  console.log(private_key);
-  return jwt.sign(payload, private_key, {
+export const signJwt = (payload: Object, keyName: 'accessTokenPrivateKey' | 'refreshTokenPrivateKey', options: SignOptions) => {
+  const privateKey = Buffer.from(config.get<string>(keyName), 'base64').toString('ascii');
+  console.log('Private', privateKey);
+  return jwt.sign(payload, privateKey, {
     ...(options && options),
     algorithm: 'RS256',
   });
 };
 
-export const verifyJwt = <T>(token: string): T | null => {
+export const verifyJwt = <T>(token: string, keyName: 'accessTokenPublicKey' | 'refreshTokenPublicKey'): T | null => {
   try {
-    const public_key = Buffer.from(publicKey, 'base64').toString('ascii');
-    return jwt.verify(token, public_key) as T;
+    const publicKey = Buffer.from(config.get<string>(keyName), 'base64').toString('ascii');
+    return jwt.verify(token, publicKey) as T;
   } catch (error) {
     return null;
   }

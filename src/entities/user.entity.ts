@@ -1,6 +1,6 @@
 import { BeforeInsert, Column, Entity, Index } from 'typeorm';
 import Model from './model.entity';
-import * as bcrypt from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 
 export enum RoleEnumType {
   USER = 'user',

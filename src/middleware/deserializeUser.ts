@@ -18,14 +18,12 @@ export const deserializeUser = async (req: Request, res: Response, next: NextFun
       return next(new AppError(401, 'You are not logged in'));
     }
 
-    // Validate the access token
-    const decoded = verifyJwt<{ sub: string }>(access_token);
+    const decoded = verifyJwt<{ sub: string }>(access_token, 'accessTokenPublicKey');
 
     if (!decoded) {
       return next(new AppError(401, `Invalid token or user doesn't exist`));
     }
 
-    // Check if the user has a valid session
     const session = await redisClient.get(decoded.sub);
 
     if (!session) {
@@ -39,7 +37,6 @@ export const deserializeUser = async (req: Request, res: Response, next: NextFun
       return next(new AppError(401, `Invalid token or session has expired`));
     }
 
-    // Add user to res.locals
     res.locals.user = user;
 
     next();
