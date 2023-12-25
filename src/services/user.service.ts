@@ -3,7 +3,7 @@ import { CreateUserInput } from '../schemas/user.schema';
 import { AppDataSource } from '../utils/data-source';
 import { signJwt } from '../utils/jwt';
 import redisClient from '../utils/connectRedis';
-import  config from 'config';
+import config from 'config';
 const userRepository = AppDataSource.getRepository(UserEntity);
 
 export const createUser = async (input: CreateUserInput) => {
@@ -21,6 +21,19 @@ export const findUserById = async ({ id }: { id: string }) => {
 export const findUser = async (query: Object) => {
   return await userRepository.findOneBy(query);
 };
+
+export const getAllUsers = async () => {
+  return await userRepository.find({
+    select: {
+      id: true,
+      email: true,
+      name: true,
+      role: true,
+      verified: true,
+    },
+  });
+};
+
 export const signTokens = async (user: UserEntity) => {
   // 1. Create Session
   redisClient.set(user.id, JSON.stringify(user), {

@@ -4,12 +4,12 @@ import { deserializeUser } from '../middleware/deserializeUser';
 import { requireUser } from '../middleware/requireUser';
 import { validate } from '../middleware/validate';
 import { createUserSchema, loginUserSchema } from '../schemas/user.schema';
+import { getAllUsers } from '../services/user.service';
 
 const router = express.Router();
 
 // Register user
 router.post('/register', validate(createUserSchema), registerUserHandler);
-
 // Login user
 router.post('/login', validate(loginUserSchema), loginUserHandler);
 
